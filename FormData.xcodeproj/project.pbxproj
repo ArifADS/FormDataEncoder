@@ -8,12 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		02365F5C21B18B4400156242 /* FormData.h in Headers */ = {isa = PBXBuildFile; fileRef = 02365F5A21B18B4400156242 /* FormData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		02365F6321B18B5500156242 /* FormDataEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02365F6221B18B5500156242 /* FormDataEncoder.swift */; };
+		02365F6821B18BCE00156242 /* FormField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02365F6721B18BCE00156242 /* FormField.swift */; };
+		02365F6A21B18BF000156242 /* FormFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02365F6921B18BF000156242 /* FormFile.swift */; };
+		02365F6D21B18C0B00156242 /* Formable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02365F6C21B18C0B00156242 /* Formable.swift */; };
+		02365F6F21B18C4D00156242 /* FormTransformable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02365F6E21B18C4D00156242 /* FormTransformable.swift */; };
+		02365F7221B18CED00156242 /* Dictionary+FormTransformable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02365F7121B18CED00156242 /* Dictionary+FormTransformable.swift */; };
+		02365F7621B18F7700156242 /* FormDataEncoder.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 02365F7521B18F7700156242 /* FormDataEncoder.podspec */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		02365F5721B18B4400156242 /* FormData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FormData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		02365F5A21B18B4400156242 /* FormData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FormData.h; sourceTree = "<group>"; };
 		02365F5B21B18B4400156242 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		02365F6221B18B5500156242 /* FormDataEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDataEncoder.swift; sourceTree = "<group>"; };
+		02365F6721B18BCE00156242 /* FormField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormField.swift; sourceTree = "<group>"; };
+		02365F6921B18BF000156242 /* FormFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormFile.swift; sourceTree = "<group>"; };
+		02365F6C21B18C0B00156242 /* Formable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formable.swift; sourceTree = "<group>"; };
+		02365F6E21B18C4D00156242 /* FormTransformable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTransformable.swift; sourceTree = "<group>"; };
+		02365F7121B18CED00156242 /* Dictionary+FormTransformable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+FormTransformable.swift"; sourceTree = "<group>"; };
+		02365F7521B18F7700156242 /* FormDataEncoder.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = FormDataEncoder.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -30,7 +44,8 @@
 		02365F4D21B18B4400156242 = {
 			isa = PBXGroup;
 			children = (
-				02365F5921B18B4400156242 /* FormData */,
+				02365F7521B18F7700156242 /* FormDataEncoder.podspec */,
+				02365F5921B18B4400156242 /* Sources */,
 				02365F5821B18B4400156242 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,13 +58,43 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		02365F5921B18B4400156242 /* FormData */ = {
+		02365F5921B18B4400156242 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				02365F6221B18B5500156242 /* FormDataEncoder.swift */,
+				02365F7021B18CDC00156242 /* Extensions */,
+				02365F6B21B18BFE00156242 /* Protocols */,
+				02365F6621B18BBE00156242 /* Models */,
 				02365F5A21B18B4400156242 /* FormData.h */,
 				02365F5B21B18B4400156242 /* Info.plist */,
 			);
-			path = FormData;
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		02365F6621B18BBE00156242 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				02365F6721B18BCE00156242 /* FormField.swift */,
+				02365F6921B18BF000156242 /* FormFile.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		02365F6B21B18BFE00156242 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				02365F6C21B18C0B00156242 /* Formable.swift */,
+				02365F6E21B18C4D00156242 /* FormTransformable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		02365F7021B18CDC00156242 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				02365F7121B18CED00156242 /* Dictionary+FormTransformable.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -95,6 +140,7 @@
 				TargetAttributes = {
 					02365F5621B18B4400156242 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
 					};
 				};
 			};
@@ -120,6 +166,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02365F7621B18F7700156242 /* FormDataEncoder.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +177,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02365F7221B18CED00156242 /* Dictionary+FormTransformable.swift in Sources */,
+				02365F6821B18BCE00156242 /* FormField.swift in Sources */,
+				02365F6D21B18C0B00156242 /* Formable.swift in Sources */,
+				02365F6F21B18C4D00156242 /* FormTransformable.swift in Sources */,
+				02365F6A21B18BF000156242 /* FormFile.swift in Sources */,
+				02365F6321B18B5500156242 /* FormDataEncoder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,6 +314,7 @@
 		02365F6021B18B4400156242 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -278,6 +332,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = eu.arifads.FormData;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -286,6 +341,7 @@
 		02365F6121B18B4400156242 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
