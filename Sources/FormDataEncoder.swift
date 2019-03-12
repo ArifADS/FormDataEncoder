@@ -32,12 +32,11 @@ public class FormDataEncoder {
 private class _FormDataEncoder: Encoder {
   public var codingPath: [CodingKey] { return [] }
   public var userInfo: [CodingUserInfoKey : Any] { return [:] }
-//  var formables = [Formable]()
   var datas = [Data]()
   
   func encode(_ value: Encodable, key: String) throws {
     switch value {
-    case let file as FormFile: self.datas.append(encodeFile(file))
+    case let file as FormFile: self.datas.append(encodeFile(name: key, file: file))
     default: self.datas.append(encodeField(name: key, value: value))
     }
   }
@@ -49,9 +48,9 @@ private class _FormDataEncoder: Encoder {
     return body.data(using: .utf8)!
   }
   
-  func encodeFile(_ file: FormFile) -> Data {
+  func encodeFile(name: String, file: FormFile) -> Data {
     var body = ""
-    body += "Content-Disposition:form-data; name=\"\(file.name)\""
+    body += "Content-Disposition:form-data; name=\"\(name)\""
     body += "; filename=\"\(file.fileName)\"\r\n"
     body += "Content-Type: \(file.type)\r\n\r\n"
     return body.data(using: .utf8)! + file.data + "\r\n".data(using: .utf8)!

@@ -12,7 +12,7 @@ import FormData
 struct UserForm: Codable {
   let id: String
   let market: String
-  let file = FormFile(name: "avatar", data: "hola".data(using: .utf8)!, type: "image/jpeg", fileName: "avatar.jpg")
+  let avatar = FormFile(data: "hola".data(using: .utf8)!, type: "image/jpeg", fileName: "avatar.jpg")
 }
 
 class Tests: XCTestCase {
@@ -23,8 +23,8 @@ class Tests: XCTestCase {
     let encoder = FormDataEncoder(boundary: boundary)
     let data = try! encoder.encode(form)
     let str = String(data: data, encoding: .utf8)!
-    let split = str.components(separatedBy: "--" + boundary + "\r\nContent-Disposition:form-data; ")
-    print(split)
+    let split = str.components(separatedBy: "--" + boundary).dropFirst()
+    XCTAssertEqual(split.count, 4)
   }
   
   func testBoundaryStart() {
