@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct FormFile: Formable {
+public struct FormFile: Codable {
   let name: String
   let data: Data
   let type: String
