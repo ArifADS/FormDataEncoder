@@ -7,19 +7,13 @@
 //
 
 import XCTest
-import FormData
+import FormDataEncoder
 
 struct UserForm: Codable {
   let id: String
   let market: String
   let avatar = FormFile(data: "hola".data(using: .utf8)!, type: "image/jpeg", fileName: "avatar.jpg")
 }
-
-struct Incident: Codable {
-  let incidents: [Int]
-  let inside: [Incident]
-}
-
 
 class Tests: XCTestCase {
   let boundary = "QWERTY123"
