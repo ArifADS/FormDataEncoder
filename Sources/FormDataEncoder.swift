@@ -18,47 +18,65 @@ public class FormDataEncoder {
   public func encode(_ object: Encodable) throws -> Data {
     let encoder = _FormDataEncoder()
     try object.encode(to: encoder)
-    let datas = encoder.datas
-    return FormDataEncoder.create(boundary: boundary, datas: datas)
+    let datas = encoder.objs.flatMap { createFormable(key: $0.key, value: $0.value) }
+    return create(datas: datas)
   }
   
-  private static func create(boundary: String, datas: [Data]) -> Data {
+  public func encode(_ object: [String: Any]) throws -> Data {
+    let datas = object.flatMap { createFormable(key: $0.key, value: $0.value) }
+    return create(datas: datas)
+  }
+  
+  private func create(datas: [Data]) -> Data {
     let fields = datas.reduce(Data()) { $0 + "--\(boundary)\r\n".data(using: .utf8)! + $1 }
     return  fields + "--\(boundary)--\r\n".data(using: .utf8)!
+  }
+  
+  private func createFormable(key: String, value: Any) -> [Data] {
+    switch value {
+    case let field as FormFile: return [encodeFile(name: key, file: field)]
+    case let values as [Any]: return values.flatMap { createFormable(key: key + "[]", value: $0) }
+    default: return [encodeField(name: key, value: value)]
+    }
+  }
+  
+  private func encodeField(name: String, value: Any) -> Data {
+    return """
+    Content-Disposition: form-data; name=\"\(name)\"
+    
+    \(value)
+    
+    """
+    .replacingOccurrences(of: "\n", with: "\r\n")
+    .data(using: .utf8)!
+  }
+  
+  private func encodeFile(name: String, file: FormFile) -> Data {
+    return """
+    Content-Disposition: form-data; name="\(name)"; filename="\(file.fileName)"
+    Content-Type: \(file.type)
+    
+    
+    """
+    .replacingOccurrences(of: "\n", with: "\r\n")
+    .data(using: .utf8)!
+    + file.data + "\r\n".data(using: .utf8)!
   }
 }
 
 private class _FormDataEncoder: Encoder {
   public var codingPath = [CodingKey]()
   public var userInfo = [CodingUserInfoKey : Any]()
-  var datas = [Data]()
+  var objs = [(key: String, value: Any)]()
   
   func encode(_ value: Encodable, key: CodingKey) throws {
-    let key = key.stringValue + (value is [Encodable] ? "[]" : "")
-    try encode(value: value, key: key)
-  }
-  
-  func encode(value: Encodable, key: String) throws {
-    switch value {
-    case let file as FormFile: self.datas.append(encodeFile(name: key, file: file))
-    case let value as [Encodable]: try value.forEach { try encode(value: $0, key: key) }
-    default: self.datas.append(encodeField(name: key, value: value))
+    let key = key.stringValue
+    
+    if let i = objs.firstIndex(where: { $0.key == key }) {
+      objs[i] = (key, value)
+    } else {
+      objs.append((key, value))
     }
-  }
-  
-  func encodeField(name: String, value: Any) -> Data {
-    var body = ""
-    body += "Content-Disposition: form-data; name=\"\(name)\""
-    body += "\r\n\r\n\(value)\r\n"
-    return body.data(using: .utf8)!
-  }
-  
-  func encodeFile(name: String, file: FormFile) -> Data {
-    var body = ""
-    body += "Content-Disposition: form-data; name=\"\(name)\""
-    body += "; filename=\"\(file.fileName)\"\r\n"
-    body += "Content-Type: \(file.type)\r\n\r\n"
-    return body.data(using: .utf8)! + file.data + "\r\n".data(using: .utf8)!
   }
   
   public func container<Key>(keyedBy type: Key.Type) -> KeyedEncodingContainer<Key> where Key : CodingKey {

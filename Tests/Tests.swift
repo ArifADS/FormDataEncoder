@@ -40,27 +40,17 @@ class Tests: XCTestCase {
     XCTAssertEqual(data.count, 268)
   }
   
+  func testEncodeDictionary() throws {
+    let encoder = FormDataEncoder(boundary: boundary)
+    let obj = ["array": [1,2,3]]
+    let data = try String(data: encoder.encode(obj), encoding: .utf8)!
+    XCTAssertEqual(data, formDictTestData)
+  }
+  
   func testFormFile() throws {
     let encoder = FormDataEncoder(boundary: boundary)
     let data = try String(data: encoder.encode(form), encoding: .utf8)!
-    let testData =
-    """
-    --QWERTY123\r\n\
-    Content-Disposition: form-data; name="id"\r\n\
-    \r\n\
-    123\r\n\
-    --QWERTY123\r\n\
-    Content-Disposition: form-data; name="market"\r\n\
-    \r\n\
-    Carrefour\r\n\
-    --QWERTY123\r\n\
-    Content-Disposition: form-data; name="avatar"; filename="avatar.jpg"\r\n\
-    Content-Type: image/jpeg\r\n\
-    \r\n\
-    hola\r\n\
-    --QWERTY123--\r\n
-    """
-    XCTAssertEqual(data, testData)
+    XCTAssertEqual(data, formFileTestData)
   }
   
   func testFormDataEncoder() throws {
@@ -74,38 +64,74 @@ class Tests: XCTestCase {
     let encoder = FormDataEncoder(boundary: "hello")
     let a = Foo(string: "a", int: 42, double: 3.14, array: [1, 2, 3], bool: true)
     let data = try String(data: encoder.encode(a), encoding: .utf8)!
-    let testData =
-    """
-    --hello\r\n\
-    Content-Disposition: form-data; name="string"\r\n\
-    \r\n\
-    a\r\n\
-    --hello\r\n\
-    Content-Disposition: form-data; name="int"\r\n\
-    \r\n\
-    42\r\n\
-    --hello\r\n\
-    Content-Disposition: form-data; name="double"\r\n\
-    \r\n\
-    3.14\r\n\
-    --hello\r\n\
-    Content-Disposition: form-data; name="array[]"\r\n\
-    \r\n\
-    1\r\n\
-    --hello\r\n\
-    Content-Disposition: form-data; name="array[]"\r\n\
-    \r\n\
-    2\r\n\
-    --hello\r\n\
-    Content-Disposition: form-data; name="array[]"\r\n\
-    \r\n\
-    3\r\n\
-    --hello\r\n\
-    Content-Disposition: form-data; name="bool"\r\n\
-    \r\n\
-    true\r\n\
-    --hello--\r\n
-    """
-    XCTAssertEqual(data, testData)
+    XCTAssertEqual(data, formTestData)
   }
 }
+
+private let formDictTestData =
+"""
+--QWERTY123\r\n\
+Content-Disposition: form-data; name="array[]"\r\n\
+\r\n\
+1\r\n\
+--QWERTY123\r\n\
+Content-Disposition: form-data; name="array[]"\r\n\
+\r\n\
+2\r\n\
+--QWERTY123\r\n\
+Content-Disposition: form-data; name="array[]"\r\n\
+\r\n\
+3\r\n\
+--QWERTY123--\r\n
+"""
+
+private let formTestData =
+"""
+--hello\r\n\
+Content-Disposition: form-data; name="string"\r\n\
+\r\n\
+a\r\n\
+--hello\r\n\
+Content-Disposition: form-data; name="int"\r\n\
+\r\n\
+42\r\n\
+--hello\r\n\
+Content-Disposition: form-data; name="double"\r\n\
+\r\n\
+3.14\r\n\
+--hello\r\n\
+Content-Disposition: form-data; name="array[]"\r\n\
+\r\n\
+1\r\n\
+--hello\r\n\
+Content-Disposition: form-data; name="array[]"\r\n\
+\r\n\
+2\r\n\
+--hello\r\n\
+Content-Disposition: form-data; name="array[]"\r\n\
+\r\n\
+3\r\n\
+--hello\r\n\
+Content-Disposition: form-data; name="bool"\r\n\
+\r\n\
+true\r\n\
+--hello--\r\n
+"""
+
+private let formFileTestData =
+"""
+--QWERTY123\r\n\
+Content-Disposition: form-data; name="id"\r\n\
+\r\n\
+123\r\n\
+--QWERTY123\r\n\
+Content-Disposition: form-data; name="market"\r\n\
+\r\n\
+Carrefour\r\n\
+--QWERTY123\r\n\
+Content-Disposition: form-data; name="avatar"; filename="avatar.jpg"\r\n\
+Content-Type: image/jpeg\r\n\
+\r\n\
+hola\r\n\
+--QWERTY123--\r\n
+"""
